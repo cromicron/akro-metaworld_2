@@ -1,6 +1,6 @@
 """A library containing types of Spaces."""
 import gym.spaces
-
+import gymnasium
 try:
     import tensorflow as tf
 except ImportError:  # pragma: no cover
@@ -44,6 +44,12 @@ def from_gym(space, is_image=False):
         return Discrete(space.n)
     elif isinstance(space, gym.spaces.Tuple):
         return Tuple(list(map(from_gym, space.spaces)))
+    elif isinstance(space, gymnasium.spaces.Box):
+        if is_image:
+            assert (space.low == 0).all() and (space.high == 255).all(), \
+                'Low and high values must be 0 and 255 for an Image'
+            return Image(space.shape)
+        return Box(low=space.low, high=space.high)
     else:  # pragma: no cover
         raise TypeError
 

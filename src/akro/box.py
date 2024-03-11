@@ -33,7 +33,7 @@ class Box(gym.spaces.Box, Space):
             np.ndarray: An array of x collapsed into one dimension.
 
         """
-        return np.asarray(x).flatten()
+        return np.asarray(x[0]).flatten()
 
     def unflatten(self, x):
         """Return an unflattened observation x.
